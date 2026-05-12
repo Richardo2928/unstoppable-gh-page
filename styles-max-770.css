@@ -1,0 +1,92 @@
+/* Tablets pequeñas: hasta 770px */
+@media (max-width: 770px) {
+    .header {
+        padding: 0.875rem 1rem;
+    }
+
+    .header-actions {
+        width: auto;
+        flex-direction: row;
+        flex: 1;
+        min-width: 0;
+        gap: 0.75rem;
+    }
+
+    .header-search-row {
+        width: auto;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .header-search-row .search-bar {
+        flex: 1;
+        width: auto;
+        min-width: 0;
+    }
+
+    .mobile-panel-toggle {
+        display: inline-flex;
+    }
+
+    .subject-tools {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .search-bar {
+        width: auto;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        display: none;
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+        border-right: none;
+        border-bottom: 2px solid var(--cyan);
+        padding: 1rem;
+    }
+
+    body.panel-open .sidebar {
+        display: block;
+    }
+
+    .workspace {
+        padding: 1.5rem;
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+    }
+
+    .toolbar {
+        flex-wrap: wrap;
+    }
+
+    .tool-btn {
+        flex: 1;
+        min-width: calc(50% - 0.25rem);
+    }
+
+    .content-block {
+        padding: 1.25rem;
+    }
+
+    .pdf-viewer {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .pdf-display {
+        height: 350px;
+    }
+
+    .pdf-annotations {
+        height: 250px;
+    }
+}

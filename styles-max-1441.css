@@ -1,0 +1,55 @@
+/* Media Queries - Responsividad */
+/* Tablets y laptops pequeñas */
+@media (max-width: 1440px) {
+    .header {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        grid-template-areas:
+            "logo search actions actions"
+            "tools tools tools tools";
+        align-items: center;
+    }
+
+    .logo {
+        grid-area: logo;
+    }
+
+    .header-search-row {
+        grid-area: search;
+    }
+
+    .header-actions {
+        grid-area: actions;
+    }
+
+    .subject-tools {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        grid-area: tools;
+    }
+
+    .sidebar {
+        width: 250px;
+    }
+
+    .search-bar {
+        width: 250px;
+    }
+
+    .workspace {
+        padding: 1.5rem;
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+    }
+
+    .pdf-viewer {
+        grid-template-columns: 1.5fr 1fr;
+    }
+
+    .content-block {
+        padding: 1.25rem;
+    }
+}

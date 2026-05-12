@@ -1,0 +1,40 @@
+/* Pantallas grandes: desde 1441px */
+@media (min-width: 1441px) {
+    .header {
+        padding: 1.25rem 2rem;
+    }
+
+    .sidebar {
+        width: 350px;
+        padding: 2rem;
+    }
+
+    .workspace {
+        padding: 2.5rem 3rem;
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+    }
+
+    .content-block {
+        padding: 2rem;
+        max-width: 1400px;
+    }
+
+    .search-bar {
+        width: 400px;
+    }
+
+    .pdf-viewer {
+        grid-template-columns: 2.5fr 1fr;
+    }
+
+    .pdf-display {
+        height: 500px;
+    }
+
+    .pdf-annotations {
+        height: 500px;
+    }
+}
