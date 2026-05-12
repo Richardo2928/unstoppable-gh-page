@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unstoppable - Editor de Recursos Académicos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cyan: #3EEDE7;
+            --dark-blue: #053154;
+            --dark-bg: #161823;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--white);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--dark-blue);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--cyan);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--cyan), var(--dark-blue));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--cyan);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .header-search-row {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .header-tools {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .mobile-panel-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-panel-toggle img {
+            width: 20px;
+            height: 20px;
+            display: block;
+        }
+
+        .search-bar {
+            background-color: var(--dark-bg);
+            border: 1px solid var(--cyan);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            color: var(--white);
+            width: 300px;
+        }
+
+        .search-bar::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn {
+            background-color: var(--cyan);
+            color: var(--dark-blue);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            height: calc(100vh - 73px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            background-color: var(--dark-blue);
+            border-right: 2px solid var(--cyan);
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            color: var(--cyan);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .subject-list {
+            list-style: none;
+        }
+
+        .subject-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .subject-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background-color: rgba(62, 237, 231, 0.1);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .subject-header:hover {
+            background-color: rgba(62, 237, 231, 0.2);
+        }
+
+        .subject-icon {
+            color: var(--cyan);
+            font-size: 1.2rem;
+        }
+
+        .subject-name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .subject-badge {
+            background-color: var(--cyan);
+            color: var(--dark-blue);
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .subsections {
+            margin-left: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .subsection-item {
+            padding: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            border-left: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .subsection-item:hover {
+            color: var(--cyan);
+            border-left-color: var(--cyan);
+        }
+
+        /* Workspace */
+        .workspace {
+            flex: 1;
+            background-color: var(--dark-bg);
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tool-btn {
+            background-color: var(--dark-blue);
+            color: var(--cyan);
+            border: 1px solid var(--cyan);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s;
+        }
+
+        .tool-btn:hover {
+            background-color: var(--cyan);
+            color: var(--dark-blue);
+        }
+
+        .tool-btn.is-active {
+            background-color: var(--cyan);
+            color: var(--dark-blue);
+            box-shadow: 0 0 0 2px rgba(62, 237, 231, 0.25);
+        }
+
+        .tool-btn.is-active:hover {
+            background-color: var(--white);
+            color: var(--dark-blue);
+        }
+
+        /* Content Blocks */
+        .content-block {
+            background-color: var(--dark-blue);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .content-block.is-hidden {
+            display: none;
+        }
+
+        .content-block:hover {
+            border-color: var(--cyan);
+        }
+
+        .block-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .block-icon {
+            width: 24px;
+            height: 24px;
+            background-color: var(--cyan);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-blue);
+            font-weight: bold;
+        }
+
+        .block-type {
+            color: var(--cyan);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .block-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .block-content {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        /* Resource Block */
+        .resource-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background-color: rgba(62, 237, 231, 0.1);
+            border-radius: 6px;
+            margin-top: 0.5rem;
+            text-decoration: none;
+            color: var(--cyan);
+            transition: all 0.3s;
+        }
+
+        .resource-link:hover {
+            background-color: rgba(62, 237, 231, 0.2);
+        }
+
+        /* Task Block */
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--cyan);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .task-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: #FFC107;
+        }
+
+        .status-progress {
+            background-color: rgba(62, 237, 231, 0.2);
+            color: var(--cyan);
+        }
+
+        /* Notes Block */
+        .note-editor {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(62, 237, 231, 0.3);
+            border-radius: 6px;
+            padding: 1rem;
+            min-height: 150px;
+            color: var(--white);
+            margin-top: 0.5rem;
+        }
+
+        .note-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background-color: var(--dark-bg);
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        /* PDF Viewer Block */
+        .pdf-viewer {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .pdf-display {
+            background-color: var(--white);
+            border-radius: 6px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-bg);
+        }
+
+        .pdf-annotations {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(62, 237, 231, 0.3);
+            border-radius: 6px;
+            padding: 1rem;
+            height: 400px;
+            overflow-y: auto;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--cyan);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--white);
+        }
+
+        /* Media Queries - Responsividad */
+
+        /* Móviles pequeños: 400 x 850 */
+        @media (max-width: 400px) {
+            .header {
+                flex-direction: column;
+                padding: 0.75rem;
+                gap: 0.75rem;
+            }
+
+            .logo-text {
+                font-size: 1.2rem;
+            }
+
+            .header-actions {
+                width: 100%;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .header-search-row {
+                width: 100%;
+            }
+
+            .header-search-row .search-bar {
+                width: 100%;
+                flex: 1;
+            }
+
+            .mobile-panel-toggle {
+                display: inline-flex;
+            }
+
+            .header-tools {
+                display: none;
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            body.panel-open .header-tools {
+                display: flex;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 0.6rem;
+                font-size: 0.875rem;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                display: none;
+                width: 100%;
+                height: auto;
+                max-height: 200px;
+                border-right: none;
+                border-bottom: 2px solid var(--cyan);
+            }
+
+            body.panel-open .sidebar {
+                display: block;
+            }
+
+            .sidebar-section {
+                margin-bottom: 1rem;
+            }
+
+            .subsections {
+                display: none;
+            }
+
+            .workspace {
+                padding: 1rem;
+            }
+
+            .workspace-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .toolbar {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .tool-btn {
+                flex: 1;
+                min-width: calc(50% - 0.25rem);
+            }
+
+            .content-block {
+                padding: 1rem;
+            }
+
+            .pdf-viewer {
+                grid-template-columns: 1fr;
+            }
+
+            .pdf-display,
+            .pdf-annotations {
+                height: 300px;
+            }
+        }
+
+        /* Tablets pequeñas: 770 x 1050 */
+        @media (min-width: 401px) and (max-width: 770px) {
+            .header {
+                flex-wrap: wrap;
+                padding: 1rem;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                width: 100%;
+                gap: 0.75rem;
+            }
+
+            .header-search-row {
+                width: 100%;
+            }
+
+            .header-search-row .search-bar {
+                flex: 1;
+                width: auto;
+            }
+
+            .mobile-panel-toggle {
+                display: inline-flex;
+            }
+
+            .header-tools {
+                display: none;
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            body.panel-open .header-tools {
+                display: flex;
+            }
+
+            .search-bar {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                display: none;
+                width: 100%;
+                height: auto;
+                max-height: 300px;
+                border-right: none;
+                border-bottom: 2px solid var(--cyan);
+                padding: 1rem;
+            }
+
+            body.panel-open .sidebar {
+                display: block;
+            }
+
+            .workspace {
+                padding: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 1.75rem;
+            }
+
+            .toolbar {
+                flex-wrap: wrap;
+            }
+
+            .tool-btn {
+                flex: 1;
+                min-width: calc(50% - 0.25rem);
+            }
+
+            .content-block {
+                padding: 1.25rem;
+            }
+
+            .pdf-viewer {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .pdf-display {
+                height: 350px;
+            }
+
+            .pdf-annotations {
+                height: 250px;
+            }
+        }
+
+        /* Tablets/Laptops pequeñas: 1440 x 900 */
+        @media (min-width: 771px) and (max-width: 1440px) {
+            .sidebar {
+                width: 250px;
+            }
+
+            .search-bar {
+                width: 250px;
+            }
+
+            .workspace {
+                padding: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 1.75rem;
+            }
+
+            .pdf-viewer {
+                grid-template-columns: 1.5fr 1fr;
+            }
+
+            .content-block {
+                padding: 1.25rem;
+            }
+        }
+
+        /* Pantallas grandes: mayor a 1440 x 900 */
+        @media (min-width: 1441px) {
+            .header {
+                padding: 1.25rem 2rem;
+            }
+
+            .sidebar {
+                width: 350px;
+                padding: 2rem;
+            }
+
+            .workspace {
+                padding: 2.5rem 3rem;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+            }
+
+            .content-block {
+                padding: 2rem;
+                max-width: 1400px;
+            }
+
+            .search-bar {
+                width: 400px;
+            }
+
+            .pdf-viewer {
+                grid-template-columns: 2.5fr 1fr;
+            }
+
+            .pdf-display {
+                height: 500px;
+            }
+
+            .pdf-annotations {
+                height: 500px;
+            }
+        }
+
+        /* Mejoras adicionales para pantallas táctiles */
+        @media (hover: none) and (pointer: coarse) {
+            .btn,
+            .tool-btn,
+            .subject-header,
+            .subsection-item,
+            .resource-link {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .checkbox {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">U</div>
+            <span class="logo-text">Unstoppable</span>
+        </div>
+        <div class="header-actions">
+            <div class="header-search-row">
+                <input type="text" class="search-bar" placeholder="Buscar recursos, tareas, notas...">
+                <button class="btn mobile-panel-toggle" type="button" aria-expanded="false" aria-label="Mostrar panel">
+                    ☰
+                </button>
+            </div>
+            <div class="header-tools">
+                <button class="btn">+ Nuevo Bloque</button>
+                <button class="btn">Colaborar</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3 class="section-title">Mis Materias</h3>
+                <ul class="subject-list">
+                    <li class="subject-item">
+                        <div class="subject-header">
+                            <span class="subject-icon">📊</span>
+                            <span class="subject-name">Control de Proyectos</span>
+                            <span class="subject-badge">5</span>
+                        </div>
+                        <div class="subsections">
+                            <div class="subsection-item" role="button" tabindex="0" data-filter="note">📝 Notas del Módulo 1</div>
+                            <div class="subsection-item" role="button" tabindex="0" data-filter="pdf">📄 PDFs - PMBOK Guide</div>
+                            <div class="subsection-item" role="button" tabindex="0" data-filter="task">✅ Tareas Pendientes</div>
+                            <div class="subsection-item" role="button" tabindex="0" data-filter="resource">🎥 Videos de clase</div>
+                        </div>
+                    </li>
+                    <li class="subject-item">
+                        <div class="subject-header">
+                            <span class="subject-icon">💻</span>
+                            <span class="subject-name">Desarrollo de Software</span>
+                            <span class="subject-badge">3</span>
+                        </div>
+                    </li>
+                    <li class="subject-item">
+                        <div class="subject-header">
+                            <span class="subject-icon">📐</span>
+                            <span class="subject-name">Matemáticas Avanzadas</span>
+                            <span class="subject-badge">7</span>
+                        </div>
+                    </li>
+                    <li class="subject-item">
+                        <div class="subject-header">
+                            <span class="subject-icon">🔬</span>
+                            <span class="subject-name">Investigación</span>
+                            <span class="subject-badge">2</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="section-title">Accesos Rápidos</h3>
+                <div class="subsections">
+                    <div class="subsection-item" role="button" tabindex="0">📅 Agenda Semanal</div>
+                    <div class="subsection-item" role="button" tabindex="0">⭐ Favoritos</div>
+                    <div class="subsection-item" role="button" tabindex="0">🔖 Marcadores</div>
+                    <div class="subsection-item" role="button" tabindex="0">🗂️ Archivos Recientes</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Workspace -->
+        <main class="workspace">
+            <div class="workspace-header">
+                <h1 class="page-title">Control de Proyectos - PMBOK</h1>
+                <div class="toolbar">
+                    <button class="tool-btn is-active" type="button" data-filter="all">Todo</button>
+                    <button class="tool-btn" type="button" data-filter="note">📝 Nota</button>
+                    <button class="tool-btn" type="button" data-filter="task">✅ Tarea</button>
+                    <button class="tool-btn" type="button" data-filter="resource">📎 Recurso</button>
+                    <button class="tool-btn" type="button" data-filter="pdf">📄 PDF</button>
+                </div>
+            </div>
+
+            <!-- Resource Block -->
+            <div class="content-block" data-block-type="resource">
+                <div class="block-header">
+                    <div class="block-icon">🔗</div>
+                    <span class="block-type">Recursos</span>
+                </div>
+                <h3 class="block-title">Material de Estudio - Módulo 1</h3>
+                <div class="block-content">
+                    <p>Videos y documentos esenciales para comprender las áreas de conocimiento del PMBOK:</p>
+                    <a href="#" class="resource-link">
+                        <span>▶️</span>
+                        <span>Introducción a la Gestión de Proyectos (YouTube - 45 min)</span>
+                    </a>
+                    <a href="#" class="resource-link">
+                        <span>📄</span>
+                        <span>PMBOK Guide 7th Edition - Capítulo 1-3</span>
+                    </a>
+                    <a href="#" class="resource-link">
+                        <span>🔗</span>
+                        <span>PMI.org - Recursos Complementarios</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Task Block -->
+            <div class="content-block" data-block-type="task">
+                <div class="block-header">
+                    <div class="block-icon">✓</div>
+                    <span class="block-type">Tarea</span>
+                </div>
+                <h3 class="block-title">Proyecto Final - Plan de Gestión</h3>
+                <div class="block-content">
+                    <p><strong>Fecha de entrega:</strong> 15 de Febrero, 2026</p>
+                    <p><strong>Objetivo:</strong> Desarrollar un plan de gestión completo para el proyecto Unstoppable utilizando las mejores prácticas del PMBOK.</p>
+                    
+                    <div class="task-item">
+                        <div class="checkbox"></div>
+                        <span>Definir el alcance del proyecto y crear el WBS</span>
+                        <span class="task-status status-progress">En Progreso</span>
+                    </div>
+                    <div class="task-item">
+                        <div class="checkbox"></div>
+                        <span>Identificar stakeholders y realizar matriz de poder-interés</span>
+                        <span class="task-status status-pending">Pendiente</span>
+                    </div>
+                    <div class="task-item">
+                        <div class="checkbox"></div>
+                        <span>Crear cronograma con diagrama de Gantt</span>
+                        <span class="task-status status-pending">Pendiente</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes Block -->
+            <div class="content-block" data-block-type="note">
+                <div class="block-header">
+                    <div class="block-icon">📝</div>
+                    <span class="block-type">Notas</span>
+                </div>
+                <h3 class="block-title">Áreas de Conocimiento - PMBOK</h3>
+                <div class="block-content">
+                    <div class="note-editor">
+                        <p><strong>Las 10 Áreas de Conocimiento del PMBOK:</strong></p>
+                        <br>
+                        <p>1. <strong>Gestión de la Integración:</strong> Coordina todos los elementos del proyecto</p>
+                        <p>2. <strong>Gestión del Alcance:</strong> Define qué está incluido y excluido</p>
+                        <p>3. <strong>Gestión del Cronograma:</strong> Planificación temporal</p>
+                        <p>4. <strong>Gestión de Costos:</strong> Presupuesto y control financiero</p>
+                        <br>
+                        <p><em>Nota: Revisar los dominios de rendimiento en la 7ma edición...</em></p>
+                    </div>
+                    <div class="note-tags">
+                        <span class="tag">#pmbok</span>
+                        <span class="tag">#areas-conocimiento</span>
+                        <span class="tag">#examen</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PDF Viewer Block -->
+            <div class="content-block" data-block-type="pdf">
+                <div class="block-header">
+                    <div class="block-icon">📄</div>
+                    <span class="block-type">PDF Anotado</span>
+                </div>
+                <h3 class="block-title">PMBOK Guide - Capítulo 3: Ciclo de Vida del Proyecto</h3>
+                <div class="pdf-viewer">
+                    <div class="pdf-display">
+                        <p style="color: var(--dark-bg); font-size: 1.2rem;">📄 Vista previa del PDF<br><small>Página 1 de 28</small></p>
+                    </div>
+                    <div class="pdf-annotations">
+                        <h4 style="color: var(--cyan); margin-bottom: 1rem;">Anotaciones</h4>
+                        <div style="margin-bottom: 1rem;">
+                            <div style="background: rgba(62, 237, 231, 0.1); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.5rem;">
+                                <div style="color: var(--cyan); font-size: 0.75rem; margin-bottom: 0.5rem;">Página 3 - Resaltado</div>
+                                <div style="font-size: 0.875rem;">Las fases del ciclo de vida proporcionan estructura y puntos de control...</div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <div style="background: rgba(62, 237, 231, 0.1); padding: 0.75rem; border-radius: 6px;">
+                                <div style="color: var(--cyan); font-size: 0.75rem; margin-bottom: 0.5rem;">Página 5 - Nota</div>
+                                <div style="font-size: 0.875rem;">💡 Importante para el proyecto final: considerar enfoque adaptativo</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const mobilePanelToggle = document.querySelector('.mobile-panel-toggle');
+        const toolButtons = document.querySelectorAll('.tool-btn');
+        const contentBlocks = document.querySelectorAll('.content-block');
+        const sidebarFilterItems = document.querySelectorAll('.subsection-item[data-filter]');
+
+        const filterBlocks = (filter) => {
+            let firstVisibleBlock = null;
+
+            contentBlocks.forEach((block) => {
+                const shouldShow = filter === 'all' || block.dataset.blockType === filter;
+                block.classList.toggle('is-hidden', !shouldShow);
+
+                if (shouldShow && !firstVisibleBlock) {
+                    firstVisibleBlock = block;
+                }
+            });
+
+            toolButtons.forEach((button) => {
+                button.classList.toggle('is-active', button.dataset.filter === filter);
+            });
+
+            if (firstVisibleBlock) {
+                firstVisibleBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        toolButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                filterBlocks(button.dataset.filter || 'all');
+            });
+        });
+
+        sidebarFilterItems.forEach((item) => {
+            const applySidebarFilter = () => {
+                filterBlocks(item.dataset.filter || 'all');
+            };
+
+            item.addEventListener('click', applySidebarFilter);
+            item.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    applySidebarFilter();
+                }
+            });
+        });
+
+        if (mobilePanelToggle) {
+            mobilePanelToggle.addEventListener('click', () => {
+                const panelIsOpen = document.body.classList.toggle('panel-open');
+                mobilePanelToggle.setAttribute('aria-expanded', String(panelIsOpen));
+                mobilePanelToggle.setAttribute('aria-label', panelIsOpen ? 'Ocultar panel' : 'Mostrar panel');
+                mobilePanelToggle.textContent = panelIsOpen ? '✕' : '☰';
+            });
+        }
+
+        filterBlocks('all');
+    </script>
+</body>
+</html>
