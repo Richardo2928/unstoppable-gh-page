@@ -1,7 +1,6 @@
 const mobilePanelToggle = document.querySelector('.mobile-panel-toggle');
 const toolButtons = document.querySelectorAll('.tool-btn');
 const contentBlocks = document.querySelectorAll('.content-block');
-const sidebarFilterItems = document.querySelectorAll('.subsection-item[data-filter]');
 
 const filterBlocks = (filter) => {
     let firstVisibleBlock = null;
@@ -27,20 +26,6 @@ const filterBlocks = (filter) => {
 toolButtons.forEach((button) => {
     button.addEventListener('click', () => {
         filterBlocks(button.dataset.filter || 'all');
-    });
-});
-
-sidebarFilterItems.forEach((item) => {
-    const applySidebarFilter = () => {
-        filterBlocks(item.dataset.filter || 'all');
-    };
-
-    item.addEventListener('click', applySidebarFilter);
-    item.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault();
-            applySidebarFilter();
-        }
     });
 });
 

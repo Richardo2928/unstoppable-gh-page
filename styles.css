@@ -200,8 +200,14 @@ body {
 }
 
 .subsection-item {
+    display: block;
+    width: 100%;
     padding: 0.5rem;
     color: rgba(255, 255, 255, 0.8);
+    background: transparent;
+    border: none;
+    font: inherit;
+    text-align: left;
     cursor: pointer;
     border-left: 2px solid transparent;
     transition: all 0.3s;
