@@ -215,6 +215,7 @@
             background-color: var(--dark-bg);
             overflow-y: auto;
             padding: 2rem;
+            scroll-padding-top: 88px;
         }
 
         .workspace-header {
@@ -270,6 +271,7 @@
             padding: 1.5rem;
             margin-bottom: 1.5rem;
             transition: all 0.3s;
+            scroll-margin-top: 88px;
         }
 
         .content-block.is-hidden {
@@ -961,7 +963,7 @@
             });
 
             if (firstVisibleBlock) {
-                firstVisibleBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                firstVisibleBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         };
 
